@@ -6,7 +6,12 @@ pipeline {
         maven 'Maven'
     }
 
+    options {
+        skipDefaultCheckout(true)
+    }
+
     stages {
+
         stage('Checkout') {
             steps {
                 git branch: 'main',
@@ -17,7 +22,7 @@ pipeline {
         stage('Build & Test') {
             steps {
                 dir('bonjour-devops') {
-                    sh 'mvn clean test'
+                    bat 'mvn clean test'
                 }
             }
         }
@@ -25,7 +30,7 @@ pipeline {
         stage('Archive') {
             steps {
                 dir('bonjour-devops') {
-                    sh 'mvn -DskipTests package'
+                    bat 'mvn -DskipTests package'
                     archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
                 }
             }
